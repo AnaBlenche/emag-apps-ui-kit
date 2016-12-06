@@ -49,27 +49,29 @@
 
             mergeLoadComplete: true,
             loadComplete: function () {
-                var table = gridOpts.table;
                 var jqGridOverlay = _getJqGridOverlay();
+                var _this = this;
+                var records = jQuery(_this).jqGrid('getGridParam', 'records');
+                var tableId = gridOpts.table.slice(1);
 
                 //Display no records message.
                 var noRecordsMessage = photonTranslations.listing[photonPageLang].noResults;
 
                 var emptyMessage = $(
-                    '<div class="custom-jqgrid-messages-'+ table.id +' custom-jqgrid-no-records-'+ table.id +' alert alert-info no-margin">' +
-                    '<i class="fa fa-info-circle"></i>' +
+                    '<div class="custom-jqgrid-messages-'+ tableId +' custom-jqgrid-no-records-'+ tableId +' alert alert-info">' +
+                    '<i class="fa fa-info-circle"></i> ' +
                     noRecordsMessage +
                     '</div>'
                 );
 
-                if (typeof table.p != 'undefined' && table.p.reccount === 0) {
-                    $('.custom-jqgrid-messages-' + table.id).remove();
-                    $('#' + table.id).parent().append(emptyMessage);
-                    $('#gbox_'+ table.id +' .ui-jqgrid-pager').addClass('hide');
+                if (records == 0) {
+                    $('.custom-jqgrid-messages-' + tableId).remove();
+                    $('#' + tableId).parent().append(emptyMessage);
+                    $('#gbox_'+ tableId +' .ui-jqgrid-pager').addClass('hide');
                 } else {
-                    $('#gbox_'+ table.id +' .ui-jqgrid-pager').removeClass('hide');
-                    $('#'+ table.id ).removeClass('hide');
-                    $('.custom-jqgrid-messages-' + table.id).remove();
+                    $('#gbox_'+ tableId +' .ui-jqgrid-pager').removeClass('hide');
+                    $('#'+ tableId ).removeClass('hide');
+                    $('.custom-jqgrid-messages-' + tableId).remove();
                 }
                 jqGridOverlay.removeClass('custom-overlay');
             },
@@ -244,7 +246,7 @@
                 ' <span class="no-items">' +
                 records +
                 '</span> ' +
-                (records == 1 ? photonTranslations.listing[photonPageLang].item : photonTranslations.listing[photonPageLang].items) +
+                photonTranslations.listing[photonPageLang].items +
                 '</div>'
             );
         }
