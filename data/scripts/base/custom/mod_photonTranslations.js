@@ -1,4 +1,4 @@
-var photonPageLang = document.documentElement.lang;
+var photonPageLang = document.documentElement.lang || 'en';
 
 var photonTranslations = [];
 
