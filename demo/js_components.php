@@ -362,7 +362,7 @@
 
         <script src="../dist/plugins/tether/tether.min.js"></script>
 
-        <script src="../dist/js/main_script.min.js"></script>
+        <script src="../dist/js/main_script.js"></script>
         <script src="../dist/js/demo_helpers.js"></script>
         <!-- SCRIPTS:End -->
 

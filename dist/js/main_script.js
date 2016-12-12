@@ -6221,7 +6221,6 @@ var Popover = (function ($) {
 /**
  * Sidebar navigation
  */
-
 function initScrollbarForSidebar() {
     $("#sidebar .sidebar-outer").customScrollbar({
         skin: "default-skin",

@@ -3,7 +3,7 @@
     <head>
         <title>Plugins - eMAG Apps UI KIT</title>
         <?php include_once "modules/_mod_meta.php"?>
-        <link rel="stylesheet" href="../dist/plugins/magnific/magnific.min.css">
+        <link rel="stylesheet" href="../dist/plugins/magnific/magnific.css">
         <?php include_once "modules/_mod_top_include.php"?>
     </head>
     <body>
@@ -121,7 +121,7 @@
         <!-- PLUGIN: Magnific popup -->
         <script src="../dist/plugins/magnific/magnific.min.js"></script>
         
-        <script src="../dist/js/main_script.min.js"></script>
+        <script src="../dist/js/main_script.js"></script>
         <script src="../dist/js/demo_helpers.js"></script>
         <!-- SCRIPTS:End -->
 

@@ -4,7 +4,7 @@
     <title>JS Components - eMAG Apps UI KIT</title>
     <?php include_once "modules/_mod_meta.php"?>
 
-    <link rel="stylesheet" href="../dist/plugins/fancytree/fancytree.min.css">
+    <link rel="stylesheet" href="../dist/plugins/fancytree/fancytree.css">
 
     <?php include_once "modules/_mod_top_include.php"?>
 
@@ -140,9 +140,9 @@
         <script>window.jQuery || document.write("<script src=\"../dist/js/lib/jquery-1.11.3.min.js\">"+"<"+"/script>")</script>
 
         <script src="../dist/js/lib/jquery-ui.1.11.4.min.js"></script>
-        <script src="../dist/plugins/fancytree/fancytree.min.js"></script>
+        <script src="../dist/plugins/fancytree/fancytree.js"></script>
 
-        <script src="../dist/js/main_script.min.js"></script>
+        <script src="../dist/js/main_script.js"></script>
         <script src="../dist/js/demo_helpers.js"></script>
         <!-- SCRIPTS:End -->
 

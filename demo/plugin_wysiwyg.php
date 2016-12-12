@@ -6,7 +6,7 @@
         <?php include_once "modules/_mod_meta.php"?>
         
         <!-- PLUGIN: Summernote -->
-        <link rel="stylesheet" href="../dist/plugins/summernote/summernote.min.css">
+        <link rel="stylesheet" href="../dist/plugins/summernote/summernote.css">
         
         <?php include_once "modules/_mod_top_include.php"?>
 
@@ -92,7 +92,7 @@
 
         <script src="../dist/plugins/summernote/summernote.min.js"></script>
         
-        <script src="../dist/js/main_script.min.js"></script>
+        <script src="../dist/js/main_script.js"></script>
         <script src="../dist/js/demo_helpers.js"></script>
         <!-- SCRIPTS:End -->
 

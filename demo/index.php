@@ -275,7 +275,7 @@
                                         <ol>
                                             <li>
                                                 <p>The easiest way to install is to add the following css line in the head of your webpage:</p>
-                                                <pre>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;examplepath/to/main_style.min.css&quot;&gt;</pre>
+                                                <pre>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;examplepath/to/main_style.css&quot;&gt;</pre>
                                                 <p>And the following javascript files before the end <code>&lt;/body&gt;</code> tag:</p>
                                                         <pre>&lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js&quot;&gt;&lt;/script&gt;
 &lt;script&gt;window.jQuery || document.write(&quot;&lt;script src=\&quot;../dist/js/lib/jquery-1.11.3.min.js\&quot;&gt;&quot;+&quot;&lt;&quot;+&quot;/script&gt;&quot;)&lt;/script&gt;
@@ -316,7 +316,7 @@
 <!-- SCRIPTS:Start -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>window.jQuery || document.write("<script src=\"../dist/js/lib/jquery-1.11.3.min.js\">"+"<"+"/script>")</script>
-<script src="../dist/js/main_script.min.js"></script>
+<script src="../dist/js/main_script.js"></script>
 <script src="../dist/js/demo_helpers.js"></script>
 <!-- SCRIPTS:End -->
 

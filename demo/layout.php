@@ -57,11 +57,11 @@
         &lt;link rel=&quot;icon&quot; type=&quot;image/png&quot; href=&quot;favicon.ico&quot;&gt;
 
         <span class="text-success">&lt;!-- The main stylesheet contains all the essential Bootstrap & eMAG Apps UI KIT styling --&gt;</span>
-        &lt;link rel=&quot;stylesheet&quot; href=&quot;css/main_style.min.css&quot;&gt;
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;css/main_style.css&quot;&gt;
         <span class="text-success">
         &lt;!--[if lt IE 9]&gt;
-            &lt;script src=&quot;../dist/js/lib/html5shiv.min.js&quot;&gt;&lt;/script&gt;
-            &lt;script src=&quot;../dist/js/lib/respond.min.js&quot;&gt;&lt;/script&gt;
+            &lt;script src=&quot;../dist/js/lib/html5shiv.js&quot;&gt;&lt;/script&gt;
+            &lt;script src=&quot;../dist/js/lib/respond.js&quot;&gt;&lt;/script&gt;
         &lt;![endif]--&gt;
         </span>
     &lt;/head&gt;
@@ -572,7 +572,7 @@
         <!-- SCRIPTS:Start -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write("<script src=\"../dist/js/lib/jquery-1.11.3.min.js\">"+"<"+"/script>")</script>
-        <script src="../dist/js/main_script.min.js"></script>
+        <script src="../dist/js/main_script.js"></script>
         <script src="../dist/js/demo_helpers.js"></script>
         <!-- SCRIPTS:End -->
 

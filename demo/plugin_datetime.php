@@ -5,7 +5,7 @@
         <?php include_once "modules/_mod_meta.php"?>
 
         <!-- PLUGIN: DateRangePicker -->
-        <link rel="stylesheet" href="../dist/plugins/daterangepicker/daterangepicker.min.css">
+        <link rel="stylesheet" href="../dist/plugins/daterangepicker/daterangepicker.css">
 
         <?php include_once "modules/_mod_top_include.php"?>
 </head>
@@ -139,7 +139,7 @@
         <!-- PLUGIN: DateRangePicker -->
         <script src="../dist/plugins/daterangepicker/daterangepicker.min.js"></script>
 
-        <script src="../dist/js/main_script.min.js"></script>
+        <script src="../dist/js/main_script.js"></script>
         <script src="../dist/js/demo_helpers.js"></script>
         <!-- SCRIPTS:End -->
 

@@ -5,8 +5,8 @@
         <title>jQGrid - eMAG Apps UI KIT</title>
         <?php include_once "modules/_mod_meta.php"?>
         
-        <link rel="stylesheet" href="../dist/plugins/jqgrid/ui.jqgrid.min.css">
-        <link rel="stylesheet" href="../dist/plugins/drop/drop.min.css">
+        <link rel="stylesheet" href="../dist/plugins/jqgrid/ui.jqgrid.css">
+        <link rel="stylesheet" href="../dist/plugins/drop/drop.css">
 
         <?php include_once "modules/_mod_top_include.php"?>
 
@@ -85,11 +85,11 @@
 <script src="../dist/plugins/prism/prism.min.js"></script>
 
 <script src="../dist/plugins/jqgrid/i18n/grid.locale-en.js"></script>
-<script src="../dist/plugins/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="../dist/plugins/jqgrid/jquery.jqGrid.js"></script>
 <script src="../dist/plugins/tether/tether.min.js"></script>
 <script src="../dist/plugins/drop/drop.min.js"></script>
 
-<script src="../dist/js/main_script.min.js"></script>
+<script src="../dist/js/main_script.js"></script>
 
 <script src="../dist/js/demo_helpers.js"></script>
 <!-- SCRIPTS:End -->
