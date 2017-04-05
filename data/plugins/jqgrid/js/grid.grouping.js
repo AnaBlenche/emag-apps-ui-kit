@@ -62,7 +62,9 @@ $.jgrid.extend({
 					}
 					grp.summary =[];
 					if(grp.hideFirstGroupCol) {
-						grp.formatDisplayField[0] = function (v) { return v;};
+						if($.isArray(grp.formatDisplayField) && !$.isFunction(grp.formatDisplayField[0] ) ) {
+							grp.formatDisplayField[0] = function (v) { return v;};
+						}
 					}
 					for(j=0, cml = cm.length; j < cml; j++) {
 						if(grp.hideFirstGroupCol) {
@@ -180,34 +182,17 @@ $.jgrid.extend({
 			tar2 = frz ? $("#"+$.jgrid.jqID(hid), "#"+$.jgrid.jqID(frz) ) : false,
 			r2 = (tar2 && tar2.length) ? tar2[0].nextSibling : null;
 			if( tarspan.hasClass(minus) ) {
-				if(grp.showSummaryOnHide) {
-					if(r){
-						while(r) {
-							itemGroupingLevel = getGroupingLevelFromClass(r.className);
-							if (itemGroupingLevel !== undefined && itemGroupingLevel <= num) {
-								break;
-							}
-							$(r).hide();
-							r = r.nextSibling;
-							if(frz) {
-								$(r2).hide();
-								r2 = r2.nextSibling;
-							}
+				if(r){
+					while(r) {
+						itemGroupingLevel = getGroupingLevelFromClass(r.className);
+						if (itemGroupingLevel !== undefined && itemGroupingLevel <= num) {
+							break;
 						}
-					}
-				} else  {
-					if(r){
-						while(r) {
-							itemGroupingLevel = getGroupingLevelFromClass(r.className);
-							if (itemGroupingLevel !== undefined && itemGroupingLevel <= num) {
-								break;
-							}
-							$(r).hide();
-							r = r.nextSibling;
-							if(frz) {
-								$(r2).hide();
-								r2 = r2.nextSibling;
-							}
+						$(r).hide();
+						r = r.nextSibling;
+						if(frz) {
+							$(r2).hide();
+							r2 = r2.nextSibling;
 						}
 					}
 				}
@@ -344,8 +329,7 @@ $.jgrid.extend({
 				icon = "<span style='cursor:pointer;margin-right:8px;margin-left:5px;' class='" + common.icon_base +" "+pmrtl+"' onclick=\"jQuery('#"+$.jgrid.jqID($t.p.id)+"').jqGrid('groupingToggle','"+hid+"');return false;\"></span>";
 				try {
 					if ($.isArray(grp.formatDisplayField) && $.isFunction(grp.formatDisplayField[n.idx])) {
-						n.displayValue = grp.formatDisplayField[n.idx].call($t, n.displayValue, n.value, $t.p.colModel[cp[n.idx]], n.idx, grp);
-						gv = n.displayValue;
+						gv = grp.formatDisplayField[n.idx].call($t, n.displayValue, n.value, $t.p.colModel[cp[n.idx]], n.idx, grp);
 					} else {
 						gv = $t.formatter(hid, n.displayValue, cp[n.idx], n.value );
 					}
@@ -428,7 +412,7 @@ $.jgrid.extend({
 			// show previous hidden groups if they are hidden and weren't removed yet
 			for(i=0;i<grp.groupField.length;i++) {
 				if(!grp.groupColumnShow[i] && grp.visibiltyOnNextGrouping[i]) {
-				$($t).jqGrid('showCol',grp.groupField[i]);
+					$($t).jqGrid('showCol',grp.groupField[i]);
 				}
 			}
 			// set visibility status of current group columns on next grouping
@@ -610,8 +594,9 @@ $.jgrid.extend({
 				} else {
 					if (skip === 0) {
 						if (o.useColSpanStyle) {
-							// expand the header height to two rows
-							$th.attr("rowspan", "2");
+							// expand the header height to n rows
+							var rowspan = $th.attr("rowspan") ? parseInt($th.attr("rowspan"),10) + 1 : 2;
+							$th.attr("rowspan", rowspan);
 						} else {
 							$('<th>', {role: "columnheader"})
 								.addClass(base.headerBox+" ui-th-column-header ui-th-"+ts.p.direction)
@@ -654,8 +639,8 @@ $.jgrid.extend({
 			}
 
 			$firstRow = $theadInTable.find("tr.jqg-first-row-header");
-			$(ts).bind('jqGridResizeStop.setGroupHeaders', function (e, nw, idx) {
-				$firstRow.find('th').eq(idx).width(nw);
+			$(ts).on('jqGridResizeStop.setGroupHeaders', function (e, nw, idx) {
+				$firstRow.find('th').eq(idx)[0].style.width = nw + "px";
 			});
 		});				
 	},
@@ -669,7 +654,7 @@ $.jgrid.extend({
 			thead = $("table.ui-jqgrid-htable thead", grid.hDiv), cm = $t.p.colModel, hc;
 			if(!grid) { return; }
 
-			$(this).unbind('.setGroupHeaders');
+			$(this).off('.setGroupHeaders');
 			$tr = $("<tr>", {role: "row"}).addClass("ui-jqgrid-labels");
 			headers = grid.headers;
 			for (i = 0, l = headers.length; i < l; i++) {

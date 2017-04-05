@@ -29,7 +29,7 @@
 **/
 "use strict";
 //module begin
-if ($.jgrid.msie && $.jgrid.msiever()===8) {
+if ($.jgrid.msie() && $.jgrid.msiever()===8) {
 	$.expr[":"].hidden = function(elem) {
 		return elem.offsetWidth === 0 || elem.offsetHeight === 0 ||
 			elem.style.display === "none";
@@ -75,6 +75,7 @@ $.jgrid.extend({
 		return this.each(function (){
 			var ts = this, tid= $.jgrid.jqID( ts.p.id );
 			function start() {ts.p.disableClick = true;}
+			function stop() { setTimeout(function () { ts.p.disableClick = false; }, 50); }
 			var sortable_opts = {
 				"tolerance" : "pointer",
 				"axis" : "x",
@@ -110,7 +111,6 @@ $.jgrid.extend({
 					if ($.isFunction(ts.p.sortable.update)) {
 						ts.p.sortable.update(permutation);
 					}
-					setTimeout(function(){ts.p.disableClick=false;}, 50);
 				}
 			};
 			if (ts.p.sortable.options) {
@@ -126,6 +126,15 @@ $.jgrid.extend({
 				};
 			} else {
 				sortable_opts.start = start;
+			}
+			if (sortable_opts.stop) {
+				var st = sortable_opts.stop;
+				sortable_opts.stop = function(e,ui) {
+					stop();
+					st.call(this,e,ui);
+				};
+			} else {
+				sortable_opts.stop = stop;
 			}
 			if (ts.p.sortable.exclude) {
 				sortable_opts.items += ":not("+ts.p.sortable.exclude+")";
@@ -170,6 +179,19 @@ $.jgrid.extend({
 			} else if ($.isFunction(fn)) {
 				fn.apply(obj, $.makeArray(arguments).slice(2));
 			}
+		}
+		function resize_select() {
+
+			var widgetData = getMultiselectWidgetData(select),
+			$thisDialogContent = widgetData.container.closest(".ui-dialog-content");
+			if ($thisDialogContent.length > 0 && typeof $thisDialogContent[0].style === "object") {
+				$thisDialogContent[0].style.width = "";
+			} else {
+				$thisDialogContent.css("width", ""); // or just remove width style
+			}
+
+			widgetData.selectedList.height(Math.max(widgetData.selectedContainer.height() - widgetData.selectedActions.outerHeight() -1, 1));
+			widgetData.availableList.height(Math.max(widgetData.availableContainer.height() - widgetData.availableActions.outerHeight() -1, 1));
 		}
 
 		opts = $.extend({
@@ -218,19 +240,7 @@ $.jgrid.extend({
 					modal: options.modal || false,
 					resizable: options.resizable || true,
 					width: options.width + 70,
-					resize: function () {
-						var widgetData = getMultiselectWidgetData(select),
-							$thisDialogContent = widgetData.container.closest(".ui-dialog-content");
-
-						if ($thisDialogContent.length > 0 && typeof $thisDialogContent[0].style === "object") {
-							$thisDialogContent[0].style.width = "";
-						} else {
-							$thisDialogContent.css("width", ""); // or just remove width style
-						}
-
-						widgetData.selectedList.height(Math.max(widgetData.selectedContainer.height() - widgetData.selectedActions.outerHeight() - 1, 1));
-						widgetData.availableList.height(Math.max(widgetData.availableContainer.height() - widgetData.availableActions.outerHeight() - 1, 1));
-					}
+					resize: resize_select
 				}, options.dialog_opts || {});
 			},
 			/* Function to get the permutation array, and pass it to the
@@ -335,6 +345,8 @@ $.jgrid.extend({
 		listHeight = Math.min(listHeight, $(window).height());
 		multiselectData.selectedList.css("height", listHeight);
 		multiselectData.availableList.css("height", listHeight);
+		
+		resize_select();
 	},
 	sortableRows : function (opts) {
 		// Can accept all sortable options and events
@@ -410,6 +422,7 @@ $.jgrid.extend({
 			updateDnD();
 			return;
 		}
+		var tid;
 		opts = $.extend({
 			"drag" : function (opts) {
 				return $.extend({
@@ -455,7 +468,7 @@ $.jgrid.extend({
 				return $.extend({
 					accept: function(d) {
 						if (!$(d).hasClass('jqgrow')) { return d;}
-						var tid = $(d).closest("table.ui-jqgrid-btable");
+						tid = $(d).closest("table.ui-jqgrid-btable");
 						if(tid.length > 0 && $.data(tid[0],"dnd") !== undefined) {
 							var cn = $.data(tid[0],"dnd").connectWith;
 							return $.inArray('#'+$.jgrid.jqID(this.id),cn) !== -1 ? true : false;
@@ -485,10 +498,10 @@ $.jgrid.extend({
 							} catch (e) {}
 						}
 						ui.helper.dropped = true;
-						if(opts.beforedrop && $.isFunction(opts.beforedrop) ) {
+						if($.data(tid[0],"dnd").beforedrop && $.isFunction($.data(tid[0],"dnd").beforedrop) ) {
 							//parameters to this callback - event, element, data to be inserted, sender, reciever
 							// should return object which will be inserted into the reciever
-							var datatoinsert = opts.beforedrop.call(this,ev,ui,getdata,$('#'+$.jgrid.jqID($t.p.id)),$(this));
+							var datatoinsert = $.data(tid[0],"dnd").beforedrop.call(this,ev,ui,getdata,$(tid[0]),$(this));
 							if (datatoinsert !== undefined && datatoinsert !== null && typeof datatoinsert === "object") { getdata = datatoinsert; }
 						}
 						if(ui.helper.dropped) {

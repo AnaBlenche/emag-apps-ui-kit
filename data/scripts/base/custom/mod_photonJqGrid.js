@@ -21,6 +21,18 @@
             loadtext: '<div class="loader-dots dark"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div>',
             datatype: 'json',
             mtype: 'POST',
+            colmenu : {
+                sortasc : "Sort Ascending",
+                sortdesc : "Sort Descending",
+                columns : "Columns",
+                filter : "Filter",
+                grouping : "Group By",
+                ungrouping : "Ungroup",
+                searchTitle : "Get items with value that:",
+                freeze : "Freeze",
+                unfreeze : "Unfreeze",
+                reorder : "Move to reorder"
+            },
 
             sortable: true,
             viewrecords: true,

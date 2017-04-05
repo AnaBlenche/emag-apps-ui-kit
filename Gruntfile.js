@@ -224,6 +224,7 @@ module.exports = function (grunt) {
                     '<%= pkg.data_plugins %>/jqgrid/js/grid.base.js',
                     '<%= pkg.data_plugins %>/jqgrid/js/grid.celledit.js',
                     '<%= pkg.data_plugins %>/jqgrid/js/grid.common.js',
+                    '<%= pkg.data_plugins %>/jqgrid/js/grid.export.js',
                     '<%= pkg.data_plugins %>/jqgrid/js/grid.filter.js',
                     '<%= pkg.data_plugins %>/jqgrid/js/grid.formedit.js',
                     '<%= pkg.data_plugins %>/jqgrid/js/grid.grouping.js',
@@ -233,10 +234,12 @@ module.exports = function (grunt) {
                     '<%= pkg.data_plugins %>/jqgrid/js/grid.pivot.js',
                     '<%= pkg.data_plugins %>/jqgrid/js/grid.subgrid.js',
                     '<%= pkg.data_plugins %>/jqgrid/js/grid.treegrid.js',
+                    '<%= pkg.data_plugins %>/jqgrid/js/grid.utils.js',
                     '<%= pkg.data_plugins %>/jqgrid/js/jqDnR.js',
                     '<%= pkg.data_plugins %>/jqgrid/js/jqModal.js',
                     '<%= pkg.data_plugins %>/jqgrid/js/jquery.fmatter.js',
-                    '<%= pkg.data_plugins %>/jqgrid/js/jquery.jqGrid.js'
+                    '<%= pkg.data_plugins %>/jqgrid/js/jquery.jqGrid.js',
+                    '<%= pkg.data_plugins %>/jqgrid/js/jquery.sortable.js'
                 ],
                 dest: '<%= pkg.dist_plugins%>/jqgrid/jquery.jqGrid.min.js'
             }

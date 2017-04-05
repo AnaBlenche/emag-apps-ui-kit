@@ -73,15 +73,8 @@ $.extend($.jgrid,{
 	},
 //Helper functions
 	findPos : function(obj) {
-		var curleft = 0, curtop = 0;
-		if (obj.offsetParent) {
-			do {
-				curleft += obj.offsetLeft;
-				curtop += obj.offsetTop;
-			} while (obj = obj.offsetParent);
-			//do not change obj == obj.offsetParent
-		}
-		return [curleft,curtop];
+		var offset = $(obj).offset();
+		return [offset.left,offset.top];
 	},
 	createModal : function(aIDs, content, p, insertSelector, posSelector, appendsel, css) {
 		p = $.extend(true, {}, $.jgrid.jqModal || {}, p);
@@ -234,7 +227,7 @@ $.extend($.jgrid,{
 			}
 			$(selector).show().attr("aria-hidden","false");
 			if(o.focusField >= 0) {
-				try{$(':input:visible',selector)[parseInt(o.focusField,10)].focus();}catch(_){}
+				try{$(':input:visible',selector)[o.focusField].focus();}catch(_){}
 			}
 		}
 	},
@@ -274,8 +267,8 @@ $.extend($.jgrid,{
 		cn = "text-align:"+mopt.align+";";
 		var cnt = "<div id='info_id'>";
 		cnt += "<div id='infocnt' style='margin:0px;padding-bottom:1em;width:100%;overflow:auto;position:relative;height:"+dh+";"+cn+"'>"+content+"</div>";
-		cnt += c_b ? "<div class='" + classes.header + "' style='text-align:"+mopt.buttonalign+";padding-bottom:0.8em;padding-top:0.5em;background-image: none;border-width: 1px 0 0 0;'><a id='closedialog' class='fm-button " + common.button + "'>"+c_b+"</a>"+buttstr+"</div>" :
-			buttstr !== ""  ? "<div class='" + classes.header + "' style='text-align:"+mopt.buttonalign+";padding-bottom:0.8em;padding-top:0.5em;background-image: none;border-width: 1px 0 0 0;'>"+buttstr+"</div>" : "";
+		cnt += c_b ? "<div class='" + classes.content + "' style='text-align:"+mopt.buttonalign+";padding-bottom:0.8em;padding-top:0.5em;background-image: none;border-width: 1px 0 0 0;'><a id='closedialog' class='fm-button " + common.button + "'>"+c_b+"</a>"+buttstr+"</div>" :
+			buttstr !== ""  ? "<div class='" + classes.content + "' style='text-align:"+mopt.buttonalign+";padding-bottom:0.8em;padding-top:0.5em;background-image: none;border-width: 1px 0 0 0;'>"+buttstr+"</div>" : "";
 		cnt += "</div>";
 
 		try {
@@ -296,10 +289,10 @@ $.extend($.jgrid,{
 		// attach onclick after inserting into the dom
 		if(buttstr) {
 			$.each(mopt.buttons,function(i){
-				$("#"+$.jgrid.jqID(this.id),"#info_id").bind('click',function(){mopt.buttons[i].onClick.call($("#info_dialog")); return false;});
+				$("#"+$.jgrid.jqID(this.id),"#info_id").on('click',function(){mopt.buttons[i].onClick.call($("#info_dialog")); return false;});
 			});
 		}
-		$("#closedialog", "#info_id").click(function(){
+		$("#closedialog", "#info_id").on('click',function(){
 			self.hideModal("#info_dialog",{
 				jqm:jm,
 				onClose: $("#info_dialog").data("onClose") || mopt.onClose,
@@ -331,9 +324,9 @@ $.extend($.jgrid,{
 		if(opt.dataEvents) {
 			$.each(opt.dataEvents, function() {
 				if (this.data !== undefined) {
-					$(el).bind(this.type, this.data, this.fn);
+					$(el).on(this.type, this.data, this.fn);
 				} else {
-					$(el).bind(this.type, this.fn);
+					$(el).on(this.type, this.fn);
 				}
 			});
 		}
@@ -343,6 +336,7 @@ $.extend($.jgrid,{
 		var elem = "", $t = this;
 		function setAttributes(elm, atr, exl ) {
 			var exclude = ['dataInit','dataEvents','dataUrl', 'buildSelect','sopt', 'searchhidden', 'defaultValue', 'attr', 'custom_element', 'custom_value', 'oper'];
+			exclude = exclude.concat(['cacheUrlData','delimiter','separator']);
 			if(exl !== undefined && $.isArray(exl)) {
 				$.merge(exclude, exl);
 			}
@@ -438,42 +432,42 @@ $.extend($.jgrid,{
 									ovm[0] = $.trim(vl);
 								}
 								//$(elem).attr(options);
-								setTimeout(function(){
-									$("option",elem).each(function(i){
-										txt = $(this).text();
-										vl = $(this).val() || txt;
-										if(cU) {
-											oV += (i!== 0 ? ";": "")+ vl+":"+txt; 
-										}
-										//if(i===0) { this.selected = ""; }
-										// fix IE8/IE7 problem with selecting of the first item on multiple=true
-										if (i === 0 && elem.multiple) { this.selected = false; }
-										$(this).attr("role","option");
-										if($.inArray($.trim(txt),ovm) > -1 || $.inArray($.trim(vl),ovm) > -1 ) {
-											this.selected= "selected";
-										}
-									});
+								//setTimeout(function(){
+								$("option",elem).each(function(i){
+									txt = $(this).text();
+									vl = $(this).val();
 									if(cU) {
-										if(options.oper === 'edit') {
-											$($t).jqGrid('setColProp',options.name,{ editoptions: {buildSelect: null, dataUrl : null, value : oV} });
-										} else if(options.oper === 'search') {
-											$($t).jqGrid('setColProp',options.name,{ searchoptions: {dataUrl : null, value : oV} });
-										} else if(options.oper ==='filter') {
-											if($("#fbox_"+$t.p.id)[0].p) {
-												var cols = $("#fbox_"+$t.p.id)[0].p.columns, nm;
-												$.each(cols,function(i) {
-													nm  =  this.index || this.name;
-													if(options.name === nm) {
-														this.searchoptions.dataUrl = null;
-														this.searchoptions.value = oV;
-														return false;
-													}
-												});
-											}
+										oV += (i!== 0 ? ";": "")+ vl+":"+txt; 
+									}
+									//if(i===0) { this.selected = ""; }
+									// fix IE8/IE7 problem with selecting of the first item on multiple=true
+									if (i === 0 && elem.multiple) { this.selected = false; }
+									$(this).attr("role","option");
+									if($.inArray($.trim(txt),ovm) > -1 || $.inArray($.trim(vl),ovm) > -1 ) {
+										this.selected= "selected";
+									}
+								});
+								if(cU) {
+									if(options.oper === 'edit') {
+										$($t).jqGrid('setColProp',options.name,{ editoptions: {buildSelect: null, dataUrl : null, value : oV} });
+									} else if(options.oper === 'search') {
+										$($t).jqGrid('setColProp',options.name,{ searchoptions: {dataUrl : null, value : oV} });
+									} else if(options.oper ==='filter') {
+										if($("#fbox_"+$t.p.id)[0].p) {
+											var cols = $("#fbox_"+$t.p.id)[0].p.columns, nm;
+											$.each(cols,function(i) {
+												nm  =  this.index || this.name;
+												if(options.name === nm) {
+													this.searchoptions.dataUrl = null;
+													this.searchoptions.value = oV;
+													return false;
+												}
+											});
 										}
 									}
-									$($t).triggerHandler("jqGridAddEditAfterSelectUrlComplete", [elem]);
-								},0);
+								}
+								$($t).triggerHandler("jqGridAddEditAfterSelectUrlComplete", [elem]);
+								//},0);
 							}
 						}
 					},ajaxso || {}));
@@ -647,10 +641,10 @@ $.extend($.jgrid,{
 	},
 	isEmpty : function(val)
 	{
-		if (val.match(/^\s+$/) || val === "")	{
+		if (val === undefined || val.match(/^\s+$/) || val === "")	{
 			return true;
 		}
-			return false;
+		return false;
 	},
 	checkTime : function(time){
 	// checks only hh:ss (and optional am/pm)
